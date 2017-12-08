@@ -1,0 +1,6 @@
+[package]
+name = "just"
+version = "0.1.0"
+authors = ["Raas Ahsan <agro@jantox.com>"]
+
+[dependencies]
