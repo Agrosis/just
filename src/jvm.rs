@@ -2,7 +2,7 @@ enum Opcode {
     MNEMONIC,
     AALOAD          = 0x32,
     AASTORE         = 0x53,
-    ACONST_NULL     = 0x1,
+    ACONST_NULL     = 0x01,
     ALOAD           = 0x19,
     ALOAD_0         = 0x2a,
     ALOAD_1         = 0x2b,
@@ -63,9 +63,9 @@ enum Opcode {
     FASTORE         = 0x51,
     FCMPG           = 0x96,
     FCMPL           = 0x95,
-    FCONST_0        = 0xb,
-    FCONST_1        = 0xc,
-    FCONSt_2        = 0xd,
+    FCONST_0        = 0x0b,
+    FCONST_1        = 0x0c,
+    FCONSt_2        = 0x0d,
     FDIV            = 0x6e,
     FLOAD           = 0x17,
     FLOAD_0         = 0x22,
@@ -96,13 +96,13 @@ enum Opcode {
     IALOAD          = 0x2e,
     IAND            = 0x7e,
     IASTORE         = 0x4f,
-    ICONST_M1       = 0x2,
-    ICONST_0        = 0x3,
-    ICONST_1        = 0x4,
-    ICONST_2        = 0x5,
-    ICONST_3        = 0x6,
-    ICONST_4        = 0x7,
-    ICONST_5        = 0x8,
+    ICONST_M1       = 0x02,
+    ICONST_0        = 0x03,
+    ICONST_1        = 0x04,
+    ICONST_2        = 0x05,
+    ICONST_3        = 0x06,
+    ICONST_4        = 0x07,
+    ICONST_5        = 0x08,
     IDIV            = 0x6c,
     IF_ACMPEQ       = 0xa5,
     IF_ACMPNE       = 0xa6,
@@ -156,8 +156,8 @@ enum Opcode {
     LAND            = 0x7f,
     LASTORE         = 0x50,
     LCMP            = 0x94,
-    LCONST_0        = 0x9,
-    LCONST_1        = 0xa,
+    LCONST_0        = 0x09,
+    LCONST_1        = 0x0a,
     LDC             = 0x12,
     LDC_W           = 0x13,
     LDC2_W          = 0x14,
@@ -188,7 +188,7 @@ enum Opcode {
     MULTIANEWARRAY  = 0xc5,
     NEW             = 0xbb,
     NEWARRAY        = 0xbc,
-    NOP             = 0x0,
+    NOP             = 0x00,
     POP             = 0x57,
     POP2            = 0x58,
     PUTFIELD        = 0xb5,
@@ -203,7 +203,7 @@ enum Opcode {
     WIDE            = 0xc4
 }
 
-enum AccessFlag {
+enum ClassAccessFlag {
     ACC_PUBLIC     = 0x0001,
     ACC_FINAL      = 0x0010,
     ACC_SUPER      = 0x0020,
@@ -212,4 +212,12 @@ enum AccessFlag {
     ACC_SYNTHETIC  = 0x1000,
     ACC_ANNOTATION = 0x2000,
     ACC_ENUM       = 0x4000
+}
+
+enum FieldAccessFlag {
+
+}
+
+enum MethodAccessFlag {
+
 }
