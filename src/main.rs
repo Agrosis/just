@@ -10,7 +10,8 @@
 mod jvm;
 mod runtime;
 
-use jvm::Opcode;
+use jvm::opcode;
+use jvm::opcode::Opcode;
 
 fn main() {
     let program: Vec<u8> = vec![
@@ -18,7 +19,7 @@ fn main() {
         Opcode::Istore1 as u8,
         Opcode::Iload1 as u8,
         Opcode::Iconst3 as u8,
-        Opcode::Iadd as u8,
+        Opcode::Imul as u8,
         Opcode::Istore2 as u8
     ];
 
@@ -34,15 +35,18 @@ fn main() {
 
         let opcode = program[pc];
 
+
         if opcode == Opcode::Iadd as u8 {
             let x = frame.operands.pop();
             let y = frame.operands.pop();
 
             match (x, y) {
                 (Some(runtime::Operand::Int(x_value)), Some(runtime::Operand::Int(y_value))) => {
-                    frame.operands.push(runtime::Operand::Int(x_value + y_value));
+                    let result = x_value + y_value;
+
+                    frame.operands.push(runtime::Operand::Int(result));
                 },
-                (_, _) => panic!("Invalid IADD parameters.")
+                (_, _) => panic!("Invalid IADD operands.")
             }
         } else if opcode == Opcode::Iconst0 as u8 {
             frame.operands.push(runtime::Operand::Int(0));
@@ -52,6 +56,30 @@ fn main() {
             frame.operands.push(runtime::Operand::Int(2));
         } else if opcode == Opcode::Iconst3 as u8 {
             frame.operands.push(runtime::Operand::Int(3));
+        } else if opcode == Opcode::Imul as u8 {
+            let x = frame.operands.pop();
+            let y = frame.operands.pop();
+
+            match (x, y) {
+                (Some(runtime::Operand::Int(x_value)), Some(runtime::Operand::Int(y_value))) => {
+                    let result = x_value * y_value;
+
+                    frame.operands.push(runtime::Operand::Int(result));
+                },
+                (_, _) => panic!("Invalid IMUL operands.")
+            }
+        } else if opcode == Opcode::Isub as u8 {
+            let x = frame.operands.pop();
+            let y = frame.operands.pop();
+
+            match (x, y) {
+                (Some(runtime::Operand::Int(x_value)), Some(runtime::Operand::Int(y_value))) => {
+                    let result = x_value - y_value;
+
+                    frame.operands.push(runtime::Operand::Int(result));
+                },
+                (_, _) => panic!("Invalid ISUB operands.")
+            }
         }
 
         pc += 1;
@@ -61,4 +89,6 @@ fn main() {
     }
 
     println!("{:?}", frame);
+
+    println!("Completed executing program.");
 }
