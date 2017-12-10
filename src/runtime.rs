@@ -5,10 +5,26 @@ struct Heap {
 
 #[derive(Debug)]
 pub struct StackFrame {
-    pub operands: Vec<Operand>
+    operands: Vec<Operand>,
+    local_variables: Vec<u32>
 }
 
 impl StackFrame {
+
+    pub fn new() -> StackFrame {
+        StackFrame {
+            operands: Vec::new(),
+            local_variables: Vec::new()
+        }
+    }
+
+    pub fn push_operand(&mut self, operand: Operand) -> () {
+        self.operands.push(operand)
+    }
+
+    pub fn pop_operand(&mut self) -> Option<Operand> {
+        self.operands.pop()
+    }
 
 }
 

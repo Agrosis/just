@@ -2,6 +2,7 @@
 pub mod opcode {
 
     #[allow(dead_code)]
+    #[derive(Debug)]
     pub enum Opcode {
     //    MNEMONIC,
         Aaload          = 0x32,

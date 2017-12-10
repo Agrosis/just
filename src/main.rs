@@ -26,60 +26,78 @@ fn main() {
     println!("JUST - JVM implementation");
 
     let mut pc = 0;
-    let mut frame = runtime::StackFrame {
-        operands: Vec::new()
-    };
+    let mut frame = runtime::StackFrame::new();
 
     loop {
-        println!("Executing instruction {}", program[pc]);
+        let byte = program[pc];
+        println!("Executing instruction {}", byte);
 
-        let opcode = program[pc];
+        let opcode_opt = opcode::from_u8(byte);
 
+        match opcode_opt {
+            Some(opcode) => {
+                match opcode {
+                    Opcode::Iadd => {
+                        let x = frame.pop_operand();
+                        let y = frame.pop_operand();
 
-        if opcode == Opcode::Iadd as u8 {
-            let x = frame.operands.pop();
-            let y = frame.operands.pop();
+                        match (x, y) {
+                            (Some(runtime::Operand::Int(x_value)), Some(runtime::Operand::Int(y_value))) => {
+                                let result = x_value + y_value;
 
-            match (x, y) {
-                (Some(runtime::Operand::Int(x_value)), Some(runtime::Operand::Int(y_value))) => {
-                    let result = x_value + y_value;
+                                frame.push_operand(runtime::Operand::Int(result));
+                            },
+                            (_, _) => panic!("Invalid IADD operands.")
+                        }
+                    },
+                    Opcode::Iconst0 => {
+                        frame.push_operand(runtime::Operand::Int(0));
+                    },
+                    Opcode::Iconst1 => {
+                        frame.push_operand(runtime::Operand::Int(1));
+                    },
+                    Opcode::Iconst2 => {
+                        frame.push_operand(runtime::Operand::Int(2));
+                    },
+                    Opcode::Iconst3 => {
+                        frame.push_operand(runtime::Operand::Int(3));
+                    },
+                    Opcode::Iconst4 => {
+                        frame.push_operand(runtime::Operand::Int(4));
+                    },
+                    Opcode::Iconst5 => {
+                        frame.push_operand(runtime::Operand::Int(5));
+                    },
+                    Opcode::Imul => {
+                        let x = frame.pop_operand();
+                        let y = frame.pop_operand();
 
-                    frame.operands.push(runtime::Operand::Int(result));
-                },
-                (_, _) => panic!("Invalid IADD operands.")
-            }
-        } else if opcode == Opcode::Iconst0 as u8 {
-            frame.operands.push(runtime::Operand::Int(0));
-        } else if opcode == Opcode::Iconst1 as u8 {
-            frame.operands.push(runtime::Operand::Int(1));
-        } else if opcode == Opcode::Iconst2 as u8 {
-            frame.operands.push(runtime::Operand::Int(2));
-        } else if opcode == Opcode::Iconst3 as u8 {
-            frame.operands.push(runtime::Operand::Int(3));
-        } else if opcode == Opcode::Imul as u8 {
-            let x = frame.operands.pop();
-            let y = frame.operands.pop();
+                        match (x, y) {
+                            (Some(runtime::Operand::Int(x_value)), Some(runtime::Operand::Int(y_value))) => {
+                                let result = x_value * y_value;
 
-            match (x, y) {
-                (Some(runtime::Operand::Int(x_value)), Some(runtime::Operand::Int(y_value))) => {
-                    let result = x_value * y_value;
+                                frame.push_operand(runtime::Operand::Int(result));
+                            },
+                            (_, _) => panic!("Invalid IMUL operands.")
+                        }
+                    },
+                    Opcode::Isub => {
+                        let x = frame.pop_operand();
+                        let y = frame.pop_operand();
 
-                    frame.operands.push(runtime::Operand::Int(result));
-                },
-                (_, _) => panic!("Invalid IMUL operands.")
-            }
-        } else if opcode == Opcode::Isub as u8 {
-            let x = frame.operands.pop();
-            let y = frame.operands.pop();
+                        match (x, y) {
+                            (Some(runtime::Operand::Int(x_value)), Some(runtime::Operand::Int(y_value))) => {
+                                let result = x_value - y_value;
 
-            match (x, y) {
-                (Some(runtime::Operand::Int(x_value)), Some(runtime::Operand::Int(y_value))) => {
-                    let result = x_value - y_value;
-
-                    frame.operands.push(runtime::Operand::Int(result));
-                },
-                (_, _) => panic!("Invalid ISUB operands.")
-            }
+                                frame.push_operand(runtime::Operand::Int(result));
+                            },
+                            (_, _) => panic!("Invalid ISUB operands.")
+                        }
+                    },
+                    _ => panic!("Unsupported opcode {:?}.", opcode)
+                }
+            },
+            None => panic!("Invalid opcode {}.", byte)
         }
 
         pc += 1;
